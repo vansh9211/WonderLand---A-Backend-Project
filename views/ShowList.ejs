@@ -1,0 +1,176 @@
+<% layout("../views/layouts/boilerplate.ejs") %>
+
+<div class="row mt-3">
+  <div class="col-8 offset-2">
+     <% if(successMsg && successMsg.length) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%=successMsg%>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %>
+      <% if(errorMsg && errorMsg.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%=errorMsg%>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %>
+
+    <div class="card listing-card">
+      <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0"><%= list.title %></h3>
+      </div>
+
+      <% let imageUrl = (list.image && list.image.url) ? list.image.url :
+      (list.image || '/placeholder-image-url.jpg'); %>
+      <img
+        src="<%= imageUrl %>"
+        class="card-img-top show-img"
+        alt="<%= list.title %> Image"
+        style="height: 20rem; width: 100%; object-fit: cover"
+      />
+
+      <div class="card-body">
+        <p class="card-text">
+          <strong>Listing created by : </strong><i><%= list.owner.username %></i> 
+        </p>
+        <p class="card-text">
+          <strong>Description:</strong> <%= list.description %>
+        </p>
+        <p class="card-text">
+          <strong>Price:</strong> &#8377;<%= list.price %>
+        </p>
+        <p class="card-text"><strong>Location:</strong> <%= list.location %></p>
+        <p class="card-text"><strong>Country:</strong> <%= list.country %></p>
+      </div>
+
+      <% if(currentUser && list.owner._id.equals(currentUser._id)) { %>
+      <div class="card-footer d-flex justify-content-between">
+        <a href="/listing/<%=list._id%>/edit" class="btn btn-sm btn-info">
+          <i class="bi bi-pencil-square"></i> Edit Listing
+        </a>
+
+        <form method="POST" action="/listing/<%=list._id%>?_method=DELETE">
+          <button type="submit" class="btn btn-sm btn-danger">
+            <i class="bi bi-trash"></i> Delete Listing
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+    </div>
+
+    <div class="my-3">
+      <a href="/listing" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back to All Listings
+      </a>
+    </div>
+
+    <hr class="mb-4" />
+
+    <% if (list.reviews && list.reviews.length > 0) { %>
+    <h4 class="mb-4">Reviews (<%= list.reviews.length %>)</h4>
+
+    <div class="row">
+      <% for (let review of list.reviews) { %>
+      <div class="col-md-6 mb-4">
+        <div class="card review-card h-100">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-2">
+              <div
+                class="bg-dark text-white rounded-circle d-flex justify-content-center align-items-center me-3"
+                style="width: 40px; height: 40px; font-weight: bold"
+              >
+                RV
+              </div>
+              <div>
+                <h6 class="mb-0"><%= review.author.username %></h6>
+                <small class="text-muted">
+                  Reviewed on: <%= review.createdAt.toLocaleDateString() %>
+                </small>
+              </div>
+            </div>
+
+            <div class="mb-2 text-warning">
+              <% for(let i = 0; i < review.rating; i++) { %>
+              <i class="bi bi-star-fill"></i>
+              <% } %> <% for(let i = review.rating; i < 5; i++) { %>
+              <i class="bi bi-star"></i>
+              <% } %>
+            </div>
+
+            <p class="card-text flex-grow-1"><%= review.comment %></p>
+
+            <form
+              method="POST"
+              action="/listing/<%=list._id%>/reviews/<%=review._id%>?_method=DELETE"
+            >
+            <% if(currentUser && review.author._id.equals(currentUser._id)) { %>
+              <button class="btn btn-sm btn-dark mt-2">
+                <i class="bi bi-x-circle-fill"></i> Delete
+              </button>
+              <% } %>
+            </form>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <% } else { %>
+    <h4 class="mb-4">No reviews yet. Be the first!</h4>
+    <% } %>
+
+    <hr class="mb-4" />
+
+    <h4>Leave a Review</h4>
+
+    <form
+      method="POST"
+      action="/listing/<%=list._id%>/reviews"
+      novalidate
+      class="needs-validation mb-3"
+    >
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          id="rating"
+          name="review[rating]"
+          class="form-range"
+          required
+        />
+        <div class="invalid-feedback">
+          Please provide a rating between 1 and 5.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea
+          name="review[comment]"
+          id="comment"
+          cols="30"
+          rows="5"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please enter a comment.</div>
+      </div>
+
+      <button type="submit" class="btn btn-success">Submit Review</button>
+    </form>
+  </div>
+</div>
+
+<br /><br />

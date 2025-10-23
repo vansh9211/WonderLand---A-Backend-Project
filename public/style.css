@@ -1,0 +1,13 @@
+#reviewContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap:30px;
+    background-color: green;
+    min-height: 400px;
+}
+.innerContainer{
+    background-color: pink;
+    width: 400px;
+    height: 200px;
+}

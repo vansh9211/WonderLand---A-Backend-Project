@@ -1,0 +1,23 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<div class="row mt-3">
+  <div class="col-6 offset-3">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">
+        <i class="bi bi-exclamation-octagon-fill"></i> Error <%= status %>
+      </h4>
+
+      <p><%= message %></p>
+
+      <hr />
+
+      <p class="mb-0">
+        Please check your URL or try navigating back to the home page.
+      </p>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/listing" class="btn btn-primary">Go to Home Page</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<div class="row mt-5">
+  <div class="col-lg-6 col-md-8 offset-lg-3 offset-md-2">
+    <% if(errorMsg && errorMsg.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%=errorMsg%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <% } %>
+    
+    <h3 class="mb-4 text-center">Log In to WanderLand</h3>
+    <form
+      method="POST"
+      action="/login"
+      class="needs-validation"
+      novalidate
+    >
+      <!-- 1. Username (Required) -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          name="username"
+          placeholder="Enter your username"
+          type="text"
+          class="form-control"
+          id="username"
+          required
+        />
+        <div class="invalid-feedback">Please enter your username.</div>
+      </div>
+
+      <!-- 2. Password (Required) -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          name="password"
+          placeholder="Enter your password"
+          type="password"
+          class="form-control"
+          id="password"
+          required
+        />
+        <div class="invalid-feedback">Password is required.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success w-100 mt-2">Log In</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <p>Don't have an account? <a href="/signup">Sign Up here</a></p>
+    </div>
+  </div>
+</div>
