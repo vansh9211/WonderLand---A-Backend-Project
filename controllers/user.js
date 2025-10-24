@@ -1,5 +1,4 @@
 const User = require("../models/user.js"); // User model dependency
-const passport = require("passport");
 
 module.exports.renderSignUpForm = (req, resp) => {
   resp.render("SignUp.ejs");
@@ -31,14 +30,10 @@ module.exports.renderLoginForm = (req, resp) => {
   resp.render("Login.ejs");
 };
 
-(module.exports.login = passport.authenticate("local", {
-  failureRedirect: "/login",
-  failureFlash: true,
-})),
-  async (req, resp) => {
-    req.flash("error", "Welcome Back!");
-    resp.redirect("/listing");
-  };
+module.exports.login = async (req, resp) => {
+  req.flash("error", "Welcome Back!");
+  resp.redirect("/listing");
+}
 
 module.exports.logout = (req, resp) => {
   req.logout((err) => {

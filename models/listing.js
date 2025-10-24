@@ -22,6 +22,10 @@ const listingModel = mongoose.Schema({
   location: {
     type: String,
   },
+  category : {
+    type : String,
+    enum : ['Trending', 'Rooms', 'Mountains' , 'Arctic' , 'Domes' , 'Camping' , 'Boats' , 'Farm'],
+  },
   country: {
     type: String,
   },
@@ -31,11 +35,11 @@ const listingModel = mongoose.Schema({
       ref: "Review",
     },
   ],
-  
   owner : {
     type : mongoose.Schema.Types.ObjectId,
     ref:"User"
   }
+  
 });
 
 const Listing = mongoose.model("Listing", listingModel);

@@ -1,47 +1,196 @@
 <% layout("../views/layouts/boilerplate.ejs") %>
 <style>
-  #outer-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-  }
-  .card {
-    width: 700px;
-  }
-  .card-img-top {
-    border-radius: 1rem !important;
-    width: 100%;
-    height: 240px;
-  }
+    /* --------------------------------- */
+    /* STYLES FOR LISTINGS GRID */
+    /* --------------------------------- */
+    #outer-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-top: 20px;
+    }
+    .card {
+        width: 18rem; 
+        border-radius: 22px;
+        transition: transform 0.2s;
+        border: none; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card:hover {
+        transform: scale(1.03); 
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .card-img-top {
+        border-radius: 1rem !important;
+        width: 100%;
+        height: 200px; 
+        object-fit: cover; 
+    }
+
+    /* --------------------------------- */
+    /* STYLES FOR FILTER BAR */
+    /* --------------------------------- */
+    .filter-bar-container {
+        overflow-x: auto; 
+        white-space: nowrap;
+        padding-bottom: 10px;
+        margin-top: 20px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+    }
+    .filter-item {
+        display: inline-block;
+        text-align: center;
+        padding: 5px 15px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: transform 0.2s, color 0.2s;
+        border-bottom: 2px solid transparent;
+        margin-right: 20px;
+        flex-shrink: 0; 
+    }
+    .filter-item:hover {
+        color: #007bff;
+        border-color: #007bff;
+    }
+    .filter-icon {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+        display: block;
+    }
+    .filter-item.active {
+        color: #0d6efd;
+        border-color: #0d6efd;
+        font-weight: bold;
+    }
 </style>
 <body>
-  <% if(successMsg && successMsg.length) { %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <%=successMsg%>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-    ></button>
-  </div>
-  <% } %>
-  
-  <div id="outer-container">
-    <% for(let list of allListingData) { %>
-    <div class="card" style="width: 18rem; border-radius: 22px">
-      <img src="<%=list.image%>" class="card-img-top" alt="listing-image" />
-      <div class="card-body">
-        <h5 class="card-title"><%= list.title %></h5>
-        <p class="card-text"><%= list.description %></p>
-        <p class="card-text">Price: $<%= list.price %>/night</p>
-
-        <a href="/listing/<%=list._id%>" class="btn btn-primary"
-          >View Details</a
-        >
-      </div>
+    
+    <!-- FLASH MESSAGES -->
+    <% if(successMsg && successMsg.length) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%=successMsg%>
+        <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+        ></button>
     </div>
     <% } %>
-  </div>
+    <% if(errorMsg && errorMsg.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%=errorMsg%>
+        <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+        ></button>
+    </div>
+    <% } %>
+    
+    <!-- CATEGORY FILTER UI -->
+    <div class="filter-bar-container">
+        <!-- Added data-category attribute, which is passed in the URL -->
+        <div class="filter-item active" data-category="">
+            <i class="bi bi-fire filter-icon"></i>
+            All Listings
+        </div>
+        
+        <div class="filter-item" data-category="rooms">
+            <i class="bi bi-house-door-fill filter-icon"></i>
+            Rooms
+        </div>
+        
+        <div class="filter-item" data-category="mountains">
+            <i class="bi bi-tree-fill filter-icon"></i>
+            Mountains
+        </div>
+        
+        <div class="filter-item" data-category="arctic">
+            <i class="bi bi-snow filter-icon"></i>
+            Arctic
+        </div>
+        
+        <div class="filter-item" data-category="domes">
+            <i class="bi bi-buildings-fill filter-icon"></i>
+            Domes
+        </div>
+        
+        <div class="filter-item" data-category="camping">
+            <i class="bi bi-activity filter-icon"></i>
+            Camping
+        </div>
+        
+        <div class="filter-item" data-category="boats">
+            <i class="bi bi-ship-fill filter-icon"></i>
+            Boats
+        </div>
+        
+        <div class="filter-item" data-category="farm">
+            <i class="bi bi-flower1 filter-icon"></i>
+            Farm
+        </div>
+    </div>
+    
+    <!-- LISTING CARDS -->
+    <div id="outer-container">
+        <% for(let list of allListingData) { %>
+        <div class="card" style="width: 18rem;">
+            <a href="/listing/<%=list._id%>">
+                <img src="<%=list.image%>" class="card-img-top" alt="<%= list.title %>" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title"><%= list.title %></h5>
+                <p class="card-text"><%= list.description %></p>
+                <p class="card-text">Price: $<%= list.price %>/night</p>
+
+                <a href="/listing/<%=list._id%>" class="btn btn-primary"
+                    >View Details</a
+                >
+            </div>
+        </div>
+        <% } %>
+    </div>
 </body>
+
+<!-- JAVASCRIPT FOR FILTER HIGHLIGHTING AND REDIRECTION -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterItems = document.querySelectorAll('.filter-item');
+
+        filterItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const category = item.getAttribute('data-category');
+                
+                // Handle UI Highlighting
+                filterItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                // Handle Filtering Logic (Redirect with query parameter)
+                let url = '/listing';
+                if (category) {
+                    // Redirect to /listing?category=xxx
+                    window.location.href = `${url}?category=${category}`;
+                } else {
+                    // Redirect to /listing
+                    window.location.href = url;
+                }
+            });
+        });
+        
+        // --- Initialization to highlight current filter on page load ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentCategory = urlParams.get('category') || ''; // Default to '' for 'All Listings'
+
+        filterItems.forEach(item => {
+            if (item.getAttribute('data-category') === currentCategory) {
+                filterItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
 <br /><br />

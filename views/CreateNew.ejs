@@ -4,7 +4,7 @@
   <div class="col-8 offset-2">
     <h3 class="mb-3">Create a New Listing</h3>
 
-    <form method="POST" action="/listing" class="needs-validation" novalidate>
+    <form method="POST" action="/listing" class="needs-validation" enctype="multipart/form-data" novalidate>
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -31,15 +31,13 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Image URL</label>
+        <label for="image" class="form-label">Upload Image</label>
         <input
           name="newListObj[image]"
-          placeholder="Enter image URL"
           type="text"
           class="form-control"
           id="image"
         />
-        <div class="invalid-feedback">An image URL is required.</div>
       </div>
 
       <div class="row">
@@ -92,21 +90,25 @@
 <script>
   // Bootstrap custom validation
   (() => {
-    'use strict'
+    "use strict";
 
     // Fetch all forms needing validation
-    const forms = document.querySelectorAll('.needs-validation')
+    const forms = document.querySelectorAll(".needs-validation");
 
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
+    Array.from(forms).forEach((form) => {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
 
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
 </script>
-<br><br>
+<br /><br />

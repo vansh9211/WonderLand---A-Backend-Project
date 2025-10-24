@@ -4,19 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wonderland</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/rating.css">
+    <link rel="stylesheet" href="/rating.css" />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
   </head>
   <body>
     <%- include("../include/Header.ejs") %>
-    <div class="container">
-      <%-body%></div>
+    <div class="container"><%-body%></div>
     <hr />
     <%- include("../include/Footer.ejs") %>
     <script
@@ -26,26 +30,25 @@
     ></script>
   </body>
 
-  
-<script>
-  // Bootstrap-style form validation
-  (function () {
-    "use strict";
-    const forms = document.querySelectorAll(".needs-validation");
+  <script>
+    // Bootstrap-style form validation
+    (function () {
+      "use strict";
+      const forms = document.querySelectorAll(".needs-validation");
 
-    Array.from(forms).forEach((form) => {
-      form.addEventListener(
-        "submit",
-        function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add("was-validated");
-        },
-        false
-      );
-    });
-  })();
-</script>
+      Array.from(forms).forEach((form) => {
+        form.addEventListener(
+          "submit",
+          function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  </script>
 </html>
