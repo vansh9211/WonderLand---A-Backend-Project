@@ -49,7 +49,7 @@ module.exports.showEachList = async (req, res, next) => {
         const list = await Listing.findById(id)
             .populate({ path: "reviews", populate: { path: "author" } })
             .populate("owner");
-        if (!list) throw new ExpressError(404, "Listing not found");
+        if (!list) return new ExpressError(404, "Listing not found");
         res.render("ShowList", { list });
     } catch (err) {
         next(err);
