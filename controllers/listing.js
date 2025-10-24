@@ -1,5 +1,4 @@
 const Listing = require("../models/listing.js");
-const Review = require('../models/reviews.js');
 const ExpressError = require("../ErrorClass/ExpressError.js"); // Needed for error throws
 
 module.exports.index = async (req, res, next) => {
